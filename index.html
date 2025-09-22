@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Időjárás App</title>
+
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="assets/css/weather.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Időjárás-előrejelző App</h1>
+            <span class="form-check form-switch themeSwitch">
+                <input class="form-check-input" type="checkbox" role="switch" id="colorSwitch" onclick="SetColorMode()">
+                <label class="form-check-label" for="switchCheckChecked">Sötét mód</label>
+            </span>
+        </header>
+
+
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+
+
+                    <div class="navbar-nav" id="mainMenu">
+                        <a class="nav-link active" href="#" onclick="RenderPage('login')">Bejelentkezés</a>
+                        <a class="nav-link" href="#" onclick="RenderPage('registration')">Regisztráció</a>
+
+                    </div>
+
+                    <div class="navbar-nav d-none" id="loggedMenu">
+                        <a class="nav-link">Időjárásadatok kezelése</a>
+                        <a class="nav-link">Statisztika</a>
+                        <a class="nav-link">Naptár</a>
+                        <a class="nav-link">Profil</a>
+                        <a class="nav-link">Kijelentkezés</a>
+                    </div>
+
+                </div>
+            </div>
+        </nav>
+
+        <main>
+        </main>
+        <!--<div class="ToastHolder"></div>-->
+        
+
+        <footer>
+            <p>Bajai SZC Türr István Technikum</p>
+            <p>Krizsák Kornél - 13.A</p>
+            <p>2025.09</p>
+            <p></p>
+        </footer>
+
+
+    </div>
+
+
+
+
+
+
+
+    <!--Assets & Controllers-->
+
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/app.js"></script>
+
+    <script src="controllers/toastCtrl.js"></script>
+    <script src="controllers/userCtrl.js"></script>
+</body>
+
+</html>
