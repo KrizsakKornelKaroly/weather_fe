@@ -4,6 +4,9 @@ let toggleSwitch = document.querySelector('#colorSwitch')
 let colorMode;
 let loggedUser = null;
 
+let mainMenu = document.querySelector('#mainMenu')
+let loggedMenu = document.querySelector('#loggedMenu')
+
 async function RenderPage(page){
     main.innerHTML = await(await fetch(`views/${page}.html`)).text();
 
@@ -36,5 +39,20 @@ toggleSwitch.addEventListener('click', ()=>{
     }
 } )
 
+async function LoggedUserCache() {
+    if(sessionStorage.getItem('loggedUser')){
+        loggedUser = JSON.parse(sessionStorage.getItem('loggedUser'))
+        mainMenu.classList.add('d-none')
+        loggedMenu.classList.remove('d-none')
+        await RenderPage('main');
+    }
+    else{
+        loggedUser = null;
+        mainMenu.classList.remove('d-none')
+        loggedMenu.classList.add('d-none')
+        await RenderPage('login');
+    }
+}
+
 LoadColorMode();
-RenderPage("registration")
+LoggedUserCache();

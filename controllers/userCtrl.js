@@ -76,14 +76,29 @@ async function Login() {
             )
         });
 
-        let valasz = await res.json();
+        let user = await res.json();
 
-        if(valasz.status == "400"){
-            Alerts(valasz.msg, 'danger')
+        if(user.id){
+            loggedUser = user;
         }
 
+        if (!loggedUser) {
+            Alerts("Hibás belépési adatok!", 'danger')
+            return;
+        }
+
+
+        sessionStorage.setItem('loggedUser', JSON.stringify(loggedUser));
+        await RenderPage('main');
+        LoggedUserCache();
 
     } catch (error) {
         console.log('Hiba: ', error)
     }
 }
+function LogOut(){
+    sessionStorage.removeItem('loggedUser');
+    LoggedUserCache();
+    RenderPage('login');
+}
+
