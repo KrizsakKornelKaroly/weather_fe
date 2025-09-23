@@ -1,8 +1,21 @@
 <h3>Profil</h3>
 <hr>
-<div id="AlertPlaceholder"></div>
+<div id="AlertPlaceholder" class="col-10 col-lg-6 offset-1 offset-lg-3"></div>
 
 <div class="row">
+    <div class="col-12 col-lg-6">
+        <h3 class="mb-3">Adatok</h3>
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="nameField" placeholder="">
+            <label for="nameField">Név:</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="email" class="form-control" id="emailField" placeholder="">
+            <label for="emailField">Email cím</label>
+        </div>
+
+        <button class="btn btn-info mt-2" id="editDataBtn" onclick="EditUserData()">Módosítás</button>
+    </div>
     <div class="col-12 col-lg-6">
         <h3 class="mb-3">Jelszómódosítás</h3>
         <div class="form-floating mb-3">
@@ -14,24 +27,11 @@
             <label for="newPasswdField">Új jelszó</label>
         </div>
         <div class="form-floating mb-3">
-            <input type="password" class="form-control" id="newPasswdFieldAgain" placeholder="">
+            <input type="password" class="form-control" id="newPasswdFieldSecond" placeholder="">
             <label for="newPasswdFieldSecond">Új jelszó megerősítése</label>
         </div>
-        <button class="btn btn-info mt-3" id="editPassBtn" onclick="editPassword()">Módosítás</button>
+        <button class="btn btn-info mt-2" id="editPassBtn" onclick="EditUserPassword()">Módosítás</button>
     </div>
-    <div class="col-12 col-lg-6">
-        <h3 class="mb-3">Adatok</h3>
     
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="nameField" placeholder="">
-            <label for="nameField">Név:</label>
-          </div>
-          <div class="form-floating mb-3">
-            <input type="email" class="form-control" id="emailField" placeholder="">
-            <label for="emailField">Email cím</label>
-          </div>
-
-          <button class="btn btn-primary mb-3 mt-2" id="editDataBtn" onclick="editProfileData()">Módosítás</button>
-    </div>
 
 </div>

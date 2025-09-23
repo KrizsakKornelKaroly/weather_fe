@@ -96,9 +96,114 @@ async function Login() {
         console.log('Hiba: ', error)
     }
 }
+
 function LogOut(){
     sessionStorage.removeItem('loggedUser');
     LoggedUserCache();
     RenderPage('login');
 }
 
+function FillUserData(){
+    let emailField = document.querySelector('#emailField');
+    let nameField = document.querySelector('#nameField');
+    let currentUser = JSON.parse(sessionStorage.getItem('loggedUser'));
+
+    emailField.value = currentUser.email;
+    nameField.value = currentUser.name;
+}
+
+async function EditUserData(){
+    let emailField = document.querySelector('#emailField');
+    let nameField = document.querySelector('#nameField');
+
+    if (nameField.value == "" || emailField.value == "") {
+        Alerts("Nem adtál meg minden adatot: Adatmódosítás", 'danger')
+        return;
+    }
+
+    if (!emailRegExp.test(emailField.value)) {
+        Alerts("Nem megfelelő email cím!", 'danger')
+        return;
+    }
+
+    try {
+        const res = await fetch(`${ServerURL}/users/profile`, {
+            method: "PATCH",
+            headers: {'Content-Type' : "application/json"},
+            body: JSON.stringify(
+                {
+                    id: loggedUser.id,
+                    name: nameField.value,
+                    email: emailField.value
+                }
+            )
+        });
+
+        let alertStatus = res.status == 200 ? 'success' : 'danger';
+
+        const data = await res.json();
+        if (res.status == 200) {
+            sessionStorage.setItem('loggedUser', JSON.stringify({ id: loggedUser.id, name: nameField.value, email: emailField.value, password: loggedUser.password }));
+        }
+        Alerts(`${data.msg}`, alertStatus);
+
+
+    } catch (error) {
+        Alerts(`Hiba történt a módosítás során: ${console.error}`, 'danger');
+    }
+
+
+}
+
+async function EditUserPassword() {
+    let oldPasswdField = document.querySelector('#oldPasswdField');
+    let newPasswdField = document.querySelector('#newPasswdField');
+    let newPasswdFieldSecond = document.querySelector('#newPasswdFieldSecond');
+
+    loggedUser = JSON.parse(sessionStorage.getItem('loggedUser'))
+
+    if (oldPasswdField.value == "" || newPasswdField.value == "" || newPasswdFieldSecond.value == "") {
+        Alerts("Nem adtál meg minden adatot! (Jelszómódosítás)", 'danger')
+        return;
+    }
+    if (oldPasswdField.value != loggedUser.password) {
+        Alerts("Hibás régi jelszó!", 'danger')
+        return;
+    }
+    if (newPasswdField.value != newPasswdFieldSecond.value) {
+        Alerts("A megadott új jelszavak nem egyeznek!", 'danger')
+        return;
+    }
+    if (!passwdRegExp.test(newPasswdField.value)) {
+        Alerts("Az új jelszó nem elég biztonságos!", 'danger')
+        return;
+    }
+    if (oldPasswdField.value == newPasswdField.value) {
+        Alerts("A régi jelszó nem egyezhet az újjal!", 'danger')
+        return;
+    }
+
+    try {
+        const res = await fetch(`${ServerURL}/users/changePassword`, {
+            method: "PATCH",
+            headers: {'Content-Type' : 'application/json'},
+            body: JSON.stringify(
+                {
+                    id: loggedUser.id,
+                    newPassword: newPasswdField.value
+                }
+            )
+        });
+        let alertStatus = res.status == 200 ? 'success' : 'danger';
+        const data = await res.json();
+        if (res.status == 200) {
+            sessionStorage.setItem('loggedUser', JSON.stringify({ id: loggedUser.id, name: loggedUser.name, email: loggedUser.email, password: newPasswdField.value}));
+        }
+
+        
+        Alerts(`${data.msg}`, alertStatus);
+        
+    } catch (error) {
+        Alerts(`Hiba történt a jelszómódosítás során! ${error} `, 'danger')
+    }
+}

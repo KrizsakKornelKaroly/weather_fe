@@ -9,7 +9,14 @@ let loggedMenu = document.querySelector('#loggedMenu')
 
 async function RenderPage(page){
     main.innerHTML = await(await fetch(`views/${page}.html`)).text();
-
+    switch (page) {
+        case 'profile':
+            FillUserData();
+            break;
+    
+        default:
+            break;
+    }
 } 
 
 function LoadColorMode(){
