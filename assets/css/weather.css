@@ -1,24 +1,38 @@
-header{
+header {
     text-align: center;
     padding: 25px 0px;
 }
 
-.themeSwitch{
+.themeSwitch {
     position: absolute;
     top: 20px;
     right: 30px;
 }
 
-footer{
+footer {
     border-top: 1px solid var(--bs-secondary-bg);
     text-align: center;
     margin-top: 20px;
     padding-top: 20px;
 }
-h3{
+
+h3 {
     padding-top: 20px;
 }
 
-hr{
+hr {
     border-top: 1px solid var(--bs-secondary);
+}
+
+.muvGomb {
+    background: #2A7B9B;
+    background: radial-gradient(circle, rgba(42, 123, 155, 1) 0%, rgba(87, 199, 133, 1) 51%, rgba(242, 237, 90, 1) 100%);
+}
+
+.kartyaBG {
+    /*
+    background: #245e75;
+background: linear-gradient(135deg, rgba(36, 94, 117, 1) 0%, rgba(57, 128, 87, 1) 51%, rgba(133, 130, 53, 1) 100%);*/
+    background: #163a4a;
+    background: linear-gradient(135deg, rgba(22, 58, 74, 1) 0%, rgba(42, 92, 63, 1) 51%, rgba(99, 93, 41, 1) 100%);
 }
