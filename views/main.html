@@ -1,20 +1,58 @@
 <div id="AlertPlaceholder"></div>
-    
+
 
 <h3>Időjárásadatok kezelése</h3>
 <hr>
 
 
 <p>
-    <button class="btn col-10 offset-1 muvGomb" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample"
-        aria-expanded="false" aria-controls="collapseWidthExample">
-        Műveletek
+    <button class="btn col-10 offset-1 muvGomb" type="button" data-bs-toggle="collapse"
+        data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">
+        Adatrögzítés
     </button>
 </p>
 <div>
+    <!--Collapse: adatrögzítés-->
     <div class="collapse col-8 offset-2" id="collapseWidthExample">
-        <div class="card card-body kartyaBG" style="width: 100%;">
-            This is some placeholder content for a horizontal collapse. Its hidden by default and shown when triggered.
+        <div class="card card-body kartyaBG">
+            <div class="form-floating mb-3 col-12 col-lg-4">
+                <input type="date" class="form-control" id="dateField" placeholder="" max="">
+                <label for="dateField">Dátum</label>
+            </div>
+
+            <div class="form-floating mb-3 col-12 col-lg-4">
+                <input type="number" class="form-control" id="minTempField" placeholder="">
+                <label for="minTempField">Min. hőmérséklet (°C)</label>
+            </div>
+
+            <div class="form-floating mb-3 col-12 col-lg-4">
+                <input type="number" class="form-control" id="maxTempField" placeholder="">
+                <label for="maxTempField">Max. hőmérséklet (°C)</label>
+            </div>
+
+
+            <!--Dropdown idea-->
+            <div class="form-floating mb-3 col-12 col-lg-4">
+                <input type="text" class="form-control" id="weatherTypeField" placeholder="">
+                <label for="weatherTypeField">Időjárás típusa</label>
+            </div>
+
+            <button class="btn" onclick="SendWeatherData()" id="addBtn">Hozzáadás</button>
         </div>
     </div>
+
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr class="table-active">
+                <th>#</th>
+                <th>Dátum</th>
+                <th>Min. hőm. °C</th>
+                <th>Max. hőm. °C</th>
+                <th>Típus</th>
+                <th>Műv.</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
 </div>

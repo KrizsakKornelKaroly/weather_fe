@@ -13,6 +13,10 @@ async function RenderPage(page){
         case 'profile':
             FillUserData();
             break;
+        case 'main':
+            setMinDate();
+            addChangeEvent(false);
+            break;
     
         default:
             break;

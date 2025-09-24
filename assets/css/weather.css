@@ -24,9 +24,10 @@ hr {
     border-top: 1px solid var(--bs-secondary);
 }
 
-.muvGomb {
+.muvGomb, #addBtn{
     background: #2A7B9B;
     background: radial-gradient(circle, rgba(42, 123, 155, 1) 0%, rgba(87, 199, 133, 1) 51%, rgba(242, 237, 90, 1) 100%);
+    border: none;
 }
 
 .kartyaBG {
