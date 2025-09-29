@@ -1,6 +1,9 @@
 let seasonData = {}
 let weatherUserData = []
 
+function deleteWeatherRow(){
+    
+}
 
 function displayWeatherData(){
     let tableBody = document.querySelector("tbody")
