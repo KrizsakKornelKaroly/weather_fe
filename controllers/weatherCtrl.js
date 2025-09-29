@@ -1,15 +1,46 @@
 let seasonData = {}
 let weatherUserData = []
 
-function deleteWeatherRow(){
+async function editWeatherRow(rowId, rowNumberId) {
+    let tableBody = document.querySelector("tbody")
+
+    let targetRow = tableBody.rows[rowNumberId]
+    let targetCell1 = targetRow.cells[1]
+    let targetCell2 = targetRow.cells[2]
+    let targetCell3 = targetRow.cells[3]
+
     
 }
 
-function displayWeatherData(){
+async function deleteWeatherRow(rowId) {
+    if (confirm("Biztosan szeretnéd törölni a sort?")) {
+        try {
+            const res = await fetch(`${ServerURL}/weather/${rowId}`, {
+                method: "DELETE",
+                headers: {
+                    'Content-Type': "application/json"
+                }
+            });
+
+            let data = await res.json();
+            if (res.status == 200) {
+                await getWeatherData();
+                displayWeatherData();
+            }
+
+            Alerts(data.msg, res.status == 200 ? "success" : "danger");
+
+        } catch (error) {
+            Alerts("Hiba történt az adat törlése során!", "danger")
+        }
+    }
+}
+
+function displayWeatherData() {
     let tableBody = document.querySelector("tbody")
     tableBody.innerHTML = "";
 
-    weatherUserData.forEach((row, index)=> {
+    weatherUserData.forEach((row, index) => {
         let tr = document.createElement('tr');
         let td1 = document.createElement('td');
         let td2 = document.createElement('td');
@@ -27,12 +58,14 @@ function displayWeatherData(){
         td1.innerHTML = (index + 1) + '.';
         td2.innerHTML = row.date;
         td3.innerHTML = row.minTemp;
-        td4.innerHTML= row.maxTemp;
+        td4.innerHTML = row.maxTemp;
         td5.innerHTML = row.weatherType;
 
         editBtn.innerHTML = '<i class="bi bi-pencil-fill"></i>';
         delBtn.innerHTML = '<i class="bi bi-trash-fill"></i>';
 
+        delBtn.setAttribute('onClick', `deleteWeatherRow(${row.id})`)
+        editBtn.setAttribute('onClick', `editWeatherRow(${row.id}, ${index})`)
 
         td6.appendChild(editBtn);
         td6.appendChild(delBtn);
@@ -44,11 +77,11 @@ function displayWeatherData(){
         tr.appendChild(td5);
         tr.appendChild(td6);
         tableBody.appendChild(tr);
-        
+
     });
 }
 
-async function getWeatherData(){
+async function getWeatherData() {
     try {
         const res = await fetch(`${ServerURL}/weather/user/${loggedUser.id}`);
         weatherUserData = await res.json();
@@ -95,7 +128,7 @@ async function SendWeatherData() {
         const res = await fetch(`${ServerURL}/weather/`, {
             method: "POST",
             headers: {
-                'Content-Type' : 'application/json'
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(
                 {
