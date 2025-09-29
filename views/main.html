@@ -1,10 +1,7 @@
-<div id="AlertPlaceholder"></div>
-
-
-<h3>Időjárásadatok kezelése</h3>
+<div id="AlertPlaceholder"></div><h3>Időjárásadatok kezelése</h3>
 <hr>
 
-
+<div id="AlertPlaceholder"></div>
 <p>
     <button class="btn col-10 offset-1 muvGomb" type="button" data-bs-toggle="collapse"
         data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">
@@ -32,10 +29,12 @@
 
 
             <!--Dropdown idea-->
-            <div class="form-floating mb-3 col-12 col-lg-4">
-                <input type="text" class="form-control" id="weatherTypeField" placeholder="">
-                <label for="weatherTypeField">Időjárás típusa</label>
-            </div>
+
+            <div class="input-group mb-3 col-12 col-lg-4">
+                <select class="form-select" id="weatherTypeField">
+                </select>
+                <label class="input-group-text" for="weatherTypeField">Időjárástípusok</label>
+              </div>
 
             <button class="btn" onclick="SendWeatherData()" id="addBtn">Hozzáadás</button>
         </div>

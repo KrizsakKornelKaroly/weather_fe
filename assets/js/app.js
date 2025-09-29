@@ -16,6 +16,9 @@ async function RenderPage(page){
         case 'main':
             setMinDate();
             addChangeEvent(false);
+            fillOptions();
+            await getWeatherData();
+            displayWeatherData();
             break;
     
         default:
