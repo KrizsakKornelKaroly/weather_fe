@@ -24,20 +24,38 @@ hr {
     border-top: 1px solid var(--bs-secondary);
 }
 
-.muvGomb, #addBtn{
+.muvGomb,
+#addBtn {
     background: #2A7B9B;
     background: radial-gradient(circle, rgba(42, 123, 155, 1) 0%, rgba(87, 199, 133, 1) 51%, rgba(242, 237, 90, 1) 100%);
     border: none;
 }
-
+/*
 .kartyaBG {
-    /*
+    
     background: #245e75;
-background: linear-gradient(135deg, rgba(36, 94, 117, 1) 0%, rgba(57, 128, 87, 1) 51%, rgba(133, 130, 53, 1) 100%);*/
+background: linear-gradient(135deg, rgba(36, 94, 117, 1) 0%, rgba(57, 128, 87, 1) 51%, rgba(133, 130, 53, 1) 100%);
     background: #163a4a;
     background: linear-gradient(135deg, rgba(22, 58, 74, 1) 0%, rgba(42, 92, 63, 1) 51%, rgba(99, 93, 41, 1) 100%);
+}*/
+
+.TempFieldEdit {
+    padding-left: 25px !important;
 }
 
-.TempFieldEdit{
-    padding-left: 25px !important;
+body {
+    background: linear-gradient(90deg, rgba(36, 94, 117, 1) 0%, rgba(57, 128, 87, 1) 51%, rgba(133, 130, 53, 1) 100%);
+}
+
+.container {
+    padding: 20px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    border-radius: 25px;
+}
+
+@media screen and (min-width: 992px) {
+    .customWidth {
+        max-width: 33.333% !important;
+    }
 }

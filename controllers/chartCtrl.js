@@ -10,7 +10,8 @@ async function getallData(){
             allWeatherData.push({
                 label: row.date,
                 y: [Number(row.minTemp), Number(row.maxTemp)],
-                name: row.weatherType
+                name: row.weatherType,
+                indexLabelFontColor: colorMode == 'dark' ? 'white' : 'black'
             }
             );
         });
@@ -25,13 +26,19 @@ async function getallData(){
 function chartLoad() {
 
     var chart = new CanvasJS.Chart("chartContainer", {
+        backgroundColor: "transparent",
         title: {
+            fontColor: colorMode == 'dark' ? 'white' : 'black',
             text: "Időjárás-előrejelzés"
         },
         axisY: {
             suffix: " °C",
             maximum: 40,
-            gridThickness: 0
+            gridThickness: 0,
+            labelFontColor: colorMode == 'dark' ? 'white' : 'black'
+        },
+        axisX: {
+            labelFontColor: colorMode == 'dark' ? 'white' : 'black'
         },
         toolTip: {
             shared: true,
@@ -46,39 +53,6 @@ function chartLoad() {
         }]
     });
     chart.render();
-
-    var images = [];
-
-    /*
-    addImages(chart);
-
-    function addImages(chart) {
-        for (var i = 0; i < chart.data[0].dataPoints.length; i++) {
-            var dpsName = chart.data[0].dataPoints[i].name;
-            if (dpsName == "cloudy") {
-                images.push($("<img>").attr("src", "https://canvasjs.com/wp-content/uploads/images/gallery/gallery-overview/cloudy.png"));
-            } else if (dpsName == "rainy") {
-                images.push($("<img>").attr("src", "https://canvasjs.com/wp-content/uploads/images/gallery/gallery-overview/rainy.png"));
-            } else if (dpsName == "sunny") {
-                images.push($("<img>").attr("src", "https://canvasjs.com/wp-content/uploads/images/gallery/gallery-overview/sunny.png"));
-            }
-
-            images[i].attr("class", dpsName).appendTo($("#chartContainer>.canvasjs-chart-container"));
-            positionImage(images[i], i);
-        }
-    }
-
-    function positionImage(image, index) {
-        var imageCenter = chart.axisX[0].convertValueToPixel(chart.data[0].dataPoints[index].x);
-        var imageTop = chart.axisY[0].convertValueToPixel(chart.axisY[0].maximum);
-
-        image.width("40px")
-            .css({
-                "left": imageCenter - 20 + "px",
-                "position": "absolute", "top": imageTop + "px",
-                "position": "absolute"
-            });
-    }*/
 
     $(window).resize(function () {
         var cloudyCounter = 0, rainyCounter = 0, sunnyCounter = 0;

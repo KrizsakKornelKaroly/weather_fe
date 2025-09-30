@@ -47,15 +47,28 @@ function LoadColorMode(){
 
 function SetColorMode(color){
     document.documentElement.setAttribute('data-bs-theme', color)
+    let mainContainer = document.querySelector('.container')
+
+    if(color == 'dark'){
+        mainContainer.classList.remove('bg-light')
+        mainContainer.classList.add('bg-dark')
+    }
+    else{
+        mainContainer.classList.remove('bg-dark')
+        mainContainer.classList.add('bg-light')
+    }
     localStorage.setItem('colorMode', color)
 }
 
-toggleSwitch.addEventListener('click', ()=>{
+toggleSwitch.addEventListener('click', async ()=>{
     if(toggleSwitch.checked){
         SetColorMode('dark')
     }
     else{
         SetColorMode('light')
+    }
+    if (document.querySelector('#chartContainer')) {
+        location.reload();
     }
 } )
 

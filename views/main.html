@@ -3,29 +3,32 @@
 
 <div id="AlertPlaceholder"></div>
 <p>
-    <button class="btn col-10 offset-1 muvGomb" type="button" data-bs-toggle="collapse"
-        data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">
+    <button class="btn col-10 offset-1 muvGomb" type="button" data-bs-toggle="collapse" data-bs-target="#dataCollapse"
+        aria-expanded="false" aria-controls="dataCollapse" style="color: white;">
         Adatrögzítés
     </button>
 </p>
 <div>
     <!--Collapse: adatrögzítés-->
-    <div class="collapse col-8 offset-2" id="collapseWidthExample">
-        <div class="card card-body kartyaBG">
-            <div class="form-floating mb-3 col-12 col-lg-4">
-                <input type="date" class="form-control" id="dateField" placeholder="" max="">
-                <label for="dateField">Dátum</label>
+    <div class="collapse col-8 offset-2" id="dataCollapse">
+        <div class="card card-body kartyaBG mb-3">
+            <div class="row">
+                <div class="form-floating mb-3 col-12 col-lg-4">
+                    <input type="date" class="form-control" id="dateField" placeholder="" max="">
+                    <label for="dateField" class="px-4">Dátum</label>
+                </div>
+
+                <div class="form-floating mb-3 col-12 col-lg-4">
+                    <input type="number" class="form-control" id="minTempField" placeholder="">
+                    <label for="minTempField" class="px-4">Min. hőmérséklet (°C)</label>
+                </div>
+
+                <div class="form-floating mb-3 col-12 col-lg-4">
+                    <input type="number" class="form-control" id="maxTempField" placeholder="">
+                    <label for="maxTempField" class="px-4">Max. hőmérséklet (°C)</label>
+                </div>
             </div>
 
-            <div class="form-floating mb-3 col-12 col-lg-4">
-                <input type="number" class="form-control" id="minTempField" placeholder="">
-                <label for="minTempField">Min. hőmérséklet (°C)</label>
-            </div>
-
-            <div class="form-floating mb-3 col-12 col-lg-4">
-                <input type="number" class="form-control" id="maxTempField" placeholder="">
-                <label for="maxTempField">Max. hőmérséklet (°C)</label>
-            </div>
 
 
             <!--Dropdown idea-->
@@ -34,9 +37,9 @@
                 <select class="form-select" id="weatherTypeField">
                 </select>
                 <label class="input-group-text" for="weatherTypeField">Időjárástípusok</label>
-              </div>
+            </div>
 
-            <button class="btn" onclick="SendWeatherData()" id="addBtn">Hozzáadás</button>
+            <button class="btn" onclick="SendWeatherData()" id="addBtn" style="color: white;">Hozzáadás</button>
         </div>
     </div>
 

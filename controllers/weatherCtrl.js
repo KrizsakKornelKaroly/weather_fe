@@ -4,15 +4,85 @@ let optionData = ["Borult", "Esős", "Felhős", "Hóesés", "Jégeső", "Köd", 
 
 
 async function editWeatherRow(rowId, rowNumberId) {
+    let minTempField = document.querySelector('#minTempFieldEdit')
+    let maxTempField = document.querySelector('#maxTempFieldEdit')
+    let weatherTypeField = document.querySelector('#weatherTypeSelect')
+
+    if (minTempField.value == '' || maxTempField.value == '' || weatherTypeField.value == '') {
+        Alerts("Hiányzó adatok!", 'danger');
+        return;
+    }
+
+    if (Number(minTempField.value) > Number(maxTempField.value)) {
+        Alerts("A maximum hőmérséklet nem lehet kisebb a minimumnál!", 'danger');
+        return;
+    }
+
+    seasonData = checkSeason(weatherUserData[rowId].date)
+
+    if (!seasonData.optionValues.includes(weatherTypeField.value)) {
+        if (!confirm("A megadott időjárástípus nem jellemző az évszakra. Biztosan folytatod?")) {
+            return;
+        }
+    }
+
+    if (Number(minTempField.value) < Number(seasonData.minTemp) || Number(maxTempField.value) > Number(seasonData.maxTemp)) {
+        if (!confirm("A megadott hőmérséklet tartomány nem jellemző az évszakra. Biztosan folytatod?")) {
+            return;
+        }
+    }
+
+    console.log(rowId, rowNumberId)
+
+    try {
+        const res = await fetch(`${ServerURL}/weather/${rowId}`, {
+            method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userID: String(loggedUser.id),
+                date: weatherUserData[weatherUserData.findIndex(item => item.id == rowId)].date,
+                minTemp: minTempField.value,
+                maxTemp: maxTempField.value,
+                weatherType: weatherTypeField.value,
+            })
+        });
+
+        let data = await res.json();
+        if (res.status == 200) {
+            await getWeatherData();
+            displayWeatherData();
+        }
+        Alerts(data.msg, res.status == 200 ? "success" : "danger")
+    }
+    catch (error) {
+        Alerts("Hiba történt a módosítás során!", "danger")
+        console.log(error)
+    }
+
+}
+
+async function openEditWeatherRow(rowId, rowNumberId) {
     let tableBody = document.querySelector("tbody")
+    let currentButton = document.querySelector(`#editBtn${rowNumberId}`);
+    currentButton.disabled = true;
+
+    if (document.querySelector(`#collapse${rowNumberId}`)) {
+        return;
+    }
+
+    for (let j = 0; j < tableBody.childElementCount; j++) {
+        let selectedRow = tableBody.children[j];
+
+        if (selectedRow.children[0].hasAttribute('colspan')) {
+            let selectedButton = document.querySelector(`#editBtn${j - 1}`);
+            selectedButton.disabled = false;
+            selectedRow.remove();
+        }
+    }
 
     let targetRow = tableBody.rows[rowNumberId + 1]
-    /*
-    let targetCell1 = targetRow.cells[1]
-    let targetCell2 = targetRow.cells[2]
-    let targetCell3 = targetRow.cells[3]
-    */
-
     let tr = document.createElement("tr")
     let td = document.createElement("td")
 
@@ -23,10 +93,13 @@ async function editWeatherRow(rowId, rowNumberId) {
     let collapseBody = document.createElement("div")
     collapseBody.classList.add("card", "card-body", "row")
 
+    let collapseRowBody = document.createElement("div")
+    collapseRowBody.classList.add("row", "justify-content-center", "mx-auto")
 
-    //mintempfield creation
+
+    //minTempField creation
     let minTempFieldParent = document.createElement("div")
-    minTempFieldParent.classList.add("form-floating", "mb-3")
+    minTempFieldParent.classList.add("form-floating", "mb-3", "col-lg-4")
 
     let minTempField = document.createElement("input")
     minTempField.setAttribute("type", "number")
@@ -42,9 +115,9 @@ async function editWeatherRow(rowId, rowNumberId) {
     minTempFieldParent.appendChild(minTempField)
     minTempFieldParent.appendChild(minTempFieldLabel)
 
-    //maxtempfield creation
+    //maxTempField creation
     let maxTempFieldParent = document.createElement("div")
-    maxTempFieldParent.classList.add("form-floating", "mb-3")
+    maxTempFieldParent.classList.add("form-floating", "mb-3", "col-lg-4")
 
     let maxTempField = document.createElement("input")
     maxTempField.setAttribute("type", "number")
@@ -62,14 +135,14 @@ async function editWeatherRow(rowId, rowNumberId) {
 
     //weathertype creation
     let weatherTypeParent = document.createElement("div");
-    weatherTypeParent.classList.add("input-group", "mb-3")
+    weatherTypeParent.classList.add("input-group", "mb-3", "col-lg-4", "customWidth")
 
     let weatherTypeSelect = document.createElement("select")
-    weatherTypeSelect.classList.add("form-select")
+    weatherTypeSelect.classList.add("form-select", "w-70")
     weatherTypeSelect.id = "weatherTypeSelect";
 
     let weatherTypeLabel = document.createElement("label")
-    weatherTypeLabel.classList.add("input-group-text")
+    weatherTypeLabel.classList.add("input-group-text", "w-30")
     weatherTypeLabel.setAttribute("for", "weatherTypeSelect")
     weatherTypeLabel.innerHTML = "Időjárástípusok"
 
@@ -81,14 +154,36 @@ async function editWeatherRow(rowId, rowNumberId) {
         option.value = optionData[i]
         option.innerHTML = optionData[i]
         weatherTypeSelect.appendChild(option)
-
     }
 
+    let buttonParent = document.createElement("div")
+    buttonParent.classList.add("row", "justify-content-center", "mx-auto")
 
 
-    collapseBody.appendChild(minTempFieldParent)
-    collapseBody.appendChild(maxTempFieldParent)
-    collapseBody.appendChild(weatherTypeParent)
+    //close button creation
+    let closeButton = document.createElement("button")
+    closeButton.classList.add("btn", "btn-secondary", "m-3", "col-lg-3")
+    closeButton.innerHTML = "Mégsem"
+    closeButton.onclick = function () {
+        tr.remove();
+        currentButton.disabled = false;
+    }
+
+    //save button creation
+    let saveButton = document.createElement("button")
+    saveButton.classList.add("btn", "btn-primary", "m-3", "col-lg-3")
+    saveButton.innerHTML = "Mentés"
+    saveButton.setAttribute("onClick", `editWeatherRow(${rowId}, ${rowNumberId})`)
+
+    collapseRowBody.appendChild(minTempFieldParent)
+    collapseRowBody.appendChild(maxTempFieldParent)
+    collapseRowBody.appendChild(weatherTypeParent)
+
+    buttonParent.appendChild(saveButton)
+    buttonParent.appendChild(closeButton)
+
+    collapseBody.appendChild(collapseRowBody)
+    collapseBody.appendChild(buttonParent)
 
     editCollapse.appendChild(collapseBody)
     td.appendChild(editCollapse)
@@ -154,11 +249,13 @@ function displayWeatherData() {
         delBtn.innerHTML = '<i class="bi bi-trash-fill"></i>';
 
         delBtn.setAttribute('onClick', `deleteWeatherRow(${row.id})`)
-        editBtn.setAttribute('onClick', `editWeatherRow(${row.id}, ${index})`)
+        editBtn.setAttribute('onClick', `openEditWeatherRow(${row.id}, ${index})`)
         editBtn.setAttribute('data-bs-toggle', "collapse")
         editBtn.setAttribute('data-bs-target', `#collapse${index}`)
         editBtn.setAttribute('aria-expanded', "false")
         editBtn.setAttribute('aria-controls', `collapse${index}`)
+
+        editBtn.id = `editBtn${index}`
 
         td6.appendChild(editBtn);
         td6.appendChild(delBtn);
@@ -205,6 +302,11 @@ async function SendWeatherData() {
     let weatherTypeField = document.querySelector('#weatherTypeField')
 
     seasonData = checkSeason(dateField.value)
+
+    if (dateField.value == '' || minTempField.value == '' || maxTempField.value == '' || weatherTypeField.value == '') {
+        Alerts("Hiányzó adatok!", 'danger');
+        return;
+    }
 
     if (Number(minTempField.value) > Number(maxTempField.value)) {
         Alerts("A maximum hőmérséklet nem lehet kisebb a minimumnál!", 'danger');
