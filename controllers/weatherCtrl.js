@@ -4,10 +4,69 @@ let weatherUserData = []
 async function editWeatherRow(rowId, rowNumberId) {
     let tableBody = document.querySelector("tbody")
 
-    let targetRow = tableBody.rows[rowNumberId]
+    let targetRow = tableBody.rows[rowNumberId+1]
+    /*
     let targetCell1 = targetRow.cells[1]
     let targetCell2 = targetRow.cells[2]
     let targetCell3 = targetRow.cells[3]
+    */
+
+    let tr = document.createElement("tr")
+    let td = document.createElement("td")
+
+    let editCollapse = document.createElement("div")
+    editCollapse.classList.add("collapse")
+    editCollapse.id = `collapse${rowNumberId}`
+
+    let collapseBody = document.createElement("div")
+    collapseBody.classList.add("card", "card-body", "row")
+
+
+    //mintempfield creation
+    let minTempFieldParent = document.createElement("div")
+    minTempFieldParent.classList.add("form-floating", "mb-3")
+
+    let minTempField = document.createElement("input")
+    minTempField.setAttribute("type", "number")
+    minTempField.classList.add("form-control")
+    minTempField.id = "minTempField"
+
+    let minTempFieldLabel = document.createElement("label")
+    minTempFieldLabel.setAttribute("for", "minTempField")
+    minTempFieldLabel.innerHTML = "Min. °C"
+
+    minTempFieldParent.appendChild(minTempField)
+    minTempFieldParent.appendChild(minTempFieldLabel)
+
+    //maxtempfield creation
+    let maxTempFieldParent = document.createElement("div")
+    maxTempFieldParent.classList.add("form-floating", "mb-3")
+
+    let maxTempField = document.createElement("input")
+    maxTempField.setAttribute("type", "number")
+    maxTempField.classList.add("form-control")
+    maxTempField.id = "maxTempField"
+
+    let maxTempFieldLabel = document.createElement("label")
+    maxTempFieldLabel.setAttribute("for", "maxTempField")
+    maxTempFieldLabel.innerHTML = "Max. °C"
+
+    maxTempFieldParent.appendChild(maxTempField)
+    maxTempFieldParent.appendChild(maxTempFieldLabel) 
+
+
+    collapseBody.appendChild(minTempFieldParent)
+    collapseBody.appendChild(maxTempFieldParent)
+
+
+
+    editCollapse.appendChild(collapseBody)
+    td.appendChild(editCollapse)
+    tr.appendChild(td)
+
+    editCollapse.classList.add("show")
+    td.setAttribute("colspan", "6")
+    tableBody.insertBefore(tr, targetRow)
 
     
 }
@@ -66,6 +125,10 @@ function displayWeatherData() {
 
         delBtn.setAttribute('onClick', `deleteWeatherRow(${row.id})`)
         editBtn.setAttribute('onClick', `editWeatherRow(${row.id}, ${index})`)
+        editBtn.setAttribute('data-bs-toggle', "collapse")
+        editBtn.setAttribute('data-bs-target', `#collapse${index}`)
+        editBtn.setAttribute('aria-expanded', "false")
+        editBtn.setAttribute('aria-controls', `collapse${index}`)
 
         td6.appendChild(editBtn);
         td6.appendChild(delBtn);
@@ -113,7 +176,7 @@ async function SendWeatherData() {
 
     seasonData = checkSeason(dateField.value)
 
-    if (minTempField > maxTempField) {
+    if (Number(minTempField.value) > Number(maxTempField.value)) {
         Alerts("A maximum hőmérséklet nem lehet kisebb a minimumnál!", 'danger');
         return;
     }
@@ -124,7 +187,14 @@ async function SendWeatherData() {
         }
     }
 
+    if (Number(minTempField.value) < Number(seasonData.minTemp) || Number(maxTempField.value) > Number(seasonData.maxTemp)) {
+        if (!confirm("A megadott hőmérséklet tartomány nem jellemző az évszakra. Biztosan folytatod?")) {
+            return;
+        }
+    }
+
     try {
+        console.log(loggedUser.id)
         const res = await fetch(`${ServerURL}/weather/`, {
             method: "POST",
             headers: {
@@ -132,7 +202,7 @@ async function SendWeatherData() {
             },
             body: JSON.stringify(
                 {
-                    userID: loggedUser.userID,
+                    userID: loggedUser.id,
                     date: dateField.value,
                     minTemp: minTempField.value,
                     maxTemp: maxTempField.value,
@@ -146,8 +216,8 @@ async function SendWeatherData() {
     } catch (error) {
         Alerts("Hiba történt a mentés során!", "danger")
     }
-
-
+    getWeatherData();
+    displayWeatherData();
 
 }
 
