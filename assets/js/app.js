@@ -24,6 +24,9 @@ async function RenderPage(page){
             await getCalendarData();
             initCalendar();
             break;
+        case 'chart':
+            await getallData();
+            chartLoad();
         default:
             break;
     }
