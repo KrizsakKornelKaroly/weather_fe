@@ -20,7 +20,10 @@ async function RenderPage(page){
             await getWeatherData();
             displayWeatherData();
             break;
-    
+        case 'calendar':
+            await getCalendarData();
+            initCalendar();
+            break;
         default:
             break;
     }

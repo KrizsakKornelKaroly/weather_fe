@@ -37,3 +37,7 @@ background: linear-gradient(135deg, rgba(36, 94, 117, 1) 0%, rgba(57, 128, 87, 1
     background: #163a4a;
     background: linear-gradient(135deg, rgba(22, 58, 74, 1) 0%, rgba(42, 92, 63, 1) 51%, rgba(99, 93, 41, 1) 100%);
 }
+
+.TempFieldEdit{
+    padding-left: 25px !important;
+}

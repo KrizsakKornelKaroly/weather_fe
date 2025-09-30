@@ -1,10 +1,12 @@
 let seasonData = {}
 let weatherUserData = []
+let optionData = ["Borult", "Esős", "Felhős", "Hóesés", "Jégeső", "Köd", "Napos", "Szeles", "Zápor", "Zivatar"]
+
 
 async function editWeatherRow(rowId, rowNumberId) {
     let tableBody = document.querySelector("tbody")
 
-    let targetRow = tableBody.rows[rowNumberId+1]
+    let targetRow = tableBody.rows[rowNumberId + 1]
     /*
     let targetCell1 = targetRow.cells[1]
     let targetCell2 = targetRow.cells[2]
@@ -28,11 +30,13 @@ async function editWeatherRow(rowId, rowNumberId) {
 
     let minTempField = document.createElement("input")
     minTempField.setAttribute("type", "number")
+    minTempField.setAttribute("placeholder", "")
     minTempField.classList.add("form-control")
-    minTempField.id = "minTempField"
+    minTempField.id = "minTempFieldEdit"
 
     let minTempFieldLabel = document.createElement("label")
-    minTempFieldLabel.setAttribute("for", "minTempField")
+    minTempFieldLabel.setAttribute("for", "minTempFieldEdit")
+    minTempFieldLabel.classList.add("TempFieldEdit")
     minTempFieldLabel.innerHTML = "Min. °C"
 
     minTempFieldParent.appendChild(minTempField)
@@ -44,21 +48,47 @@ async function editWeatherRow(rowId, rowNumberId) {
 
     let maxTempField = document.createElement("input")
     maxTempField.setAttribute("type", "number")
+    maxTempField.setAttribute("placeholder", "")
     maxTempField.classList.add("form-control")
-    maxTempField.id = "maxTempField"
+    maxTempField.id = "maxTempFieldEdit"
 
     let maxTempFieldLabel = document.createElement("label")
-    maxTempFieldLabel.setAttribute("for", "maxTempField")
+    maxTempFieldLabel.setAttribute("for", "maxTempFieldEdit")
+    maxTempFieldLabel.classList.add("TempFieldEdit")
     maxTempFieldLabel.innerHTML = "Max. °C"
 
     maxTempFieldParent.appendChild(maxTempField)
-    maxTempFieldParent.appendChild(maxTempFieldLabel) 
+    maxTempFieldParent.appendChild(maxTempFieldLabel)
+
+    //weathertype creation
+    let weatherTypeParent = document.createElement("div");
+    weatherTypeParent.classList.add("input-group", "mb-3")
+
+    let weatherTypeSelect = document.createElement("select")
+    weatherTypeSelect.classList.add("form-select")
+    weatherTypeSelect.id = "weatherTypeSelect";
+
+    let weatherTypeLabel = document.createElement("label")
+    weatherTypeLabel.classList.add("input-group-text")
+    weatherTypeLabel.setAttribute("for", "weatherTypeSelect")
+    weatherTypeLabel.innerHTML = "Időjárástípusok"
+
+    weatherTypeParent.appendChild(weatherTypeSelect)
+    weatherTypeParent.appendChild(weatherTypeLabel)
+
+    for (let i = 0; i < optionData.length; i++) {
+        let option = document.createElement("option")
+        option.value = optionData[i]
+        option.innerHTML = optionData[i]
+        weatherTypeSelect.appendChild(option)
+
+    }
+
 
 
     collapseBody.appendChild(minTempFieldParent)
     collapseBody.appendChild(maxTempFieldParent)
-
-
+    collapseBody.appendChild(weatherTypeParent)
 
     editCollapse.appendChild(collapseBody)
     td.appendChild(editCollapse)
@@ -68,7 +98,7 @@ async function editWeatherRow(rowId, rowNumberId) {
     td.setAttribute("colspan", "6")
     tableBody.insertBefore(tr, targetRow)
 
-    
+
 }
 
 async function deleteWeatherRow(rowId) {
@@ -273,7 +303,6 @@ function checkSeason(date) {
 }
 
 function fillOptions() {
-    let optionData = ["Borult", "Esős", "Felhős", "Hóesés", "Jégeső", "Köd", "Napos", "Szeles", "Zápor", "Zivatar"]
     let weatherTypeField = document.querySelector('#weatherTypeField')
 
     for (let i = 0; i < optionData.length; i++) {
