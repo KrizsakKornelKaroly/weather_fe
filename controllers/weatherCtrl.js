@@ -348,7 +348,7 @@ async function SendWeatherData() {
     } catch (error) {
         Alerts("Hiba történt a mentés során!", "danger")
     }
-    getWeatherData();
+    await getWeatherData();
     displayWeatherData();
 
 }
